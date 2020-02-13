@@ -1,9 +1,9 @@
 <template>
   <nav class="navbar is-spaced" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item" href="https://bulma.io">
+      <router-link class="navbar-item" :to="{ name: 'PageHome' }">
         <h1 class="title is-4">VueMeetuper</h1>
-      </a>
+      </router-link>
       <a
         role="button"
         class="navbar-burger burger"
@@ -19,7 +19,9 @@
 
     <div id="navbarBasicExample" class="navbar-menu">
       <div class="navbar-start">
-        <a class="navbar-item">Home</a>
+        <router-link :to="{ name: 'PageHome' }" class="navbar-item"
+          >Home</router-link
+        >
 
         <a class="navbar-item">Find</a>
 
@@ -54,5 +56,4 @@
 export default {};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
