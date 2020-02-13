@@ -66,7 +66,15 @@
       "eslint:recommended"
     ],
     "rules": {
-      "no-debugger": 0
+      "no-debugger": 0,
+      "no-unused-vars": [
+        "error",
+        {
+          "vars": "all",
+          "args": "after-used",
+          "ignoreRestSiblings": false
+        }
+      ]
     },
     "parserOptions": {
       "parser": "babel-eslint"
