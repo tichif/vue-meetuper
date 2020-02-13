@@ -3,7 +3,11 @@
 </template>
 
 <script>
-export default {};
+export default {
+  created() {
+    const meetupId = this.$route.params.id;
+  }
+};
 </script>
 
 <style scoped></style>
