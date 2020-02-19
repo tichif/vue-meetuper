@@ -79,11 +79,11 @@
 <script>
 export default {
   created() {
-    this.$store.dispatch('fetchMeetups');
+    this.$store.dispatch('meetups/fetchMeetups');
   },
   computed: {
     meetups() {
-      return this.$store.state.meetups;
+      return this.$store.state.meetups.items;
     }
   }
 };
