@@ -9,14 +9,14 @@ export default {
   actions: {
     // fetch categories
     fetchCategories({ state, commit }) {
-      axios.get('/api/v1/categories').then(res => {
+      return axios.get('/api/v1/categories').then(res => {
         const categories = res.data;
         commit(
           'setItems',
           { resource: 'categories', items: categories },
           { root: true }
         );
-        return state.categories;
+        return state.items;
       });
     }
   },

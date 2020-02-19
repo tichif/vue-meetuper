@@ -1,7 +1,7 @@
 <template>
   <div>
     <AppHero />
-    <div class="container">
+    <div v-if="pageLoader_isDataLoaded" class="container">
       <section class="section">
         <div class="m-b-lg">
           <h1 class="title is-inline">
@@ -38,16 +38,20 @@
         </div>
       </section>
     </div>
+    <div class="container" v-else>
+      <AppSpinner></AppSpinner>
+    </div>
   </div>
 </template>
 
 <script>
-// import axios from 'axios';
+import pageLoader from '@/mixins/pageLoader';
 import CategoryItem from '@/components/CategoryItem';
 import MeetupItem from '@/components/MeetupItem';
 import { mapActions, mapState } from 'vuex';
 export default {
   components: { CategoryItem, MeetupItem },
+  mixins: [pageLoader],
   computed: {
     ...mapState({
       meetups: state => state.meetups.items,
@@ -55,10 +59,14 @@ export default {
     })
   },
   created() {
-    //fetching meetups
-    this.fetchMeetups();
-    //fetching categories
-    this.fetchCategories();
+    Promise.all([this.fetchMeetups(), this.fetchCategories()])
+      .then(() => {
+        this.pageLoader_resolveData();
+      })
+      .catch(err => {
+        console.error(err);
+        this.pageLoader_resolveData();
+      });
   },
   methods: {
     ...mapActions('meetups', ['fetchMeetups']),
