@@ -6,32 +6,21 @@
         <div class="m-b-lg">
           <h1 class="title is-inline">Featured Meetups in "Location"</h1>
           <AppDropdown />
-          <button class="button is-primary is-pulled-right m-r-sm">
-            Create Meetups
-          </button>
+          <button class="button is-primary is-pulled-right m-r-sm">Create Meetups</button>
           <router-link
             :to="{ name: 'PageMeetupFind' }"
             class="button is-primary is-pulled-right m-r-sm"
-            >All</router-link
-          >
+          >All</router-link>
         </div>
         <div class="row columns is-multiline">
-          <MeetupItem
-            v-for="meetup in meetups"
-            :key="meetup._id"
-            :meetup="meetup"
-          ></MeetupItem>
+          <MeetupItem v-for="meetup in meetups" :key="meetup._id" :meetup="meetup"></MeetupItem>
         </div>
       </section>
       <section class="section">
         <div>
           <h1 class="title">Categories</h1>
           <div class="columns cover is-multiline is-mobile">
-            <CategoryItem
-              v-for="category in categories"
-              :key="category._id"
-              :category="category"
-            ></CategoryItem>
+            <CategoryItem v-for="category in categories" :key="category._id" :category="category"></CategoryItem>
           </div>
         </div>
       </section>
@@ -40,9 +29,9 @@
 </template>
 
 <script>
-import axios from 'axios';
-import CategoryItem from '@/components/CategoryItem';
-import MeetupItem from '@/components/MeetupItem';
+import axios from "axios";
+import CategoryItem from "@/components/CategoryItem";
+import MeetupItem from "@/components/MeetupItem";
 export default {
   components: { CategoryItem, MeetupItem },
   data() {
@@ -52,13 +41,14 @@ export default {
     };
   },
   created() {
+    console.log(this.$store);
     //fetching meetups
-    axios.get('/api/v1/meetups').then(res => {
+    axios.get("/api/v1/meetups").then(res => {
       this.meetups = res.data;
     });
 
     //fetching categories
-    axios.get('/api/v1/categories').then(res => {
+    axios.get("/api/v1/categories").then(res => {
       this.categories = res.data;
     });
   }
