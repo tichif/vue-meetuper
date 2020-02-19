@@ -4,7 +4,9 @@
     <div class="container">
       <section class="section">
         <div class="m-b-lg">
-          <h1 class="title is-inline">Featured Meetups in "Location"</h1>
+          <h1 class="title is-inline">
+            Featured Meetups in "Location"
+          </h1>
           <AppDropdown />
           <button class="button is-primary is-pulled-right m-r-sm">
             Create Meetups
@@ -43,21 +45,23 @@
 // import axios from 'axios';
 import CategoryItem from '@/components/CategoryItem';
 import MeetupItem from '@/components/MeetupItem';
+import { mapActions, mapState } from 'vuex';
 export default {
   components: { CategoryItem, MeetupItem },
   computed: {
-    meetups() {
-      return this.$store.state.meetups;
-    },
-    categories() {
-      return this.$store.state.categories;
-    }
+    ...mapState({
+      meetups: state => state.meetups,
+      categories: state => state.categories
+    })
   },
   created() {
     //fetching meetups
-    this.$store.dispatch('fetchMeetups');
+    this.fetchMeetups();
     //fetching categories
-    this.$store.dispatch('fetchCategories');
+    this.fetchCategories();
+  },
+  methods: {
+    ...mapActions(['fetchMeetups', 'fetchCategories'])
   }
 };
 </script>

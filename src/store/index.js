@@ -13,7 +13,11 @@ export default new Vuex.Store({
     meetup: {}
   },
   // getters are like computed properties. Simple functions to get a state
-  getters: {},
+  getters: {
+    testingGetters() {
+      return 55;
+    }
+  },
   // Actions are like methods in vue instance. They should mutate the state
   // Very good spot to fetch data. Action call usually should resolve into data
   actions: {
