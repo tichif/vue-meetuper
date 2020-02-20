@@ -16,6 +16,7 @@
                     class="input is-large"
                     type="text"
                     placeholder="Username"
+                    v-model="form.username"
                   />
                 </div>
               </div>
@@ -25,6 +26,7 @@
                     class="input is-large"
                     type="text"
                     placeholder="Name"
+                    v-model="form.name"
                   />
                 </div>
               </div>
@@ -34,6 +36,7 @@
                     class="input is-large"
                     type="email"
                     placeholder="Your Email"
+                    v-model="form.email"
                   />
                 </div>
               </div>
@@ -44,6 +47,7 @@
                     type="text"
                     placeholder="Avatar"
                     autocomplete=""
+                    v-model="form.avatar"
                   />
                 </div>
               </div>
@@ -54,6 +58,7 @@
                     type="password"
                     placeholder="Your Password"
                     autocomplete="new-password"
+                    v-model="form.password"
                   />
                 </div>
               </div>
@@ -64,12 +69,14 @@
                     type="password"
                     placeholder="Password Confirmation"
                     autocomplete="off"
+                    v-model="form.passwordConfirmation"
                   />
                 </div>
               </div>
               <button
                 type="submit"
                 class="button is-block is-info is-large is-fullwidth"
+                @click.prevent="register"
               >
                 Register
               </button>
@@ -87,7 +94,25 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      form: {
+        username: null,
+        name: null,
+        email: null,
+        avatar: null,
+        password: null,
+        passwordConfirmation: null
+      }
+    };
+  },
+  methods: {
+    register() {
+      this.$store.dispatch('auth/registerUser', this.form);
+    }
+  }
+};
 </script>
 
 <style scoped>

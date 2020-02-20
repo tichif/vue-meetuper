@@ -18,6 +18,7 @@
                     placeholder="Your Email"
                     autofocus=""
                     autocomplete="email"
+                    v-model="form.email"
                   />
                 </div>
               </div>
@@ -28,10 +29,14 @@
                     type="password"
                     placeholder="Your Password"
                     autocomplete="current-password"
+                    v-model="form.password"
                   />
                 </div>
               </div>
-              <button class="button is-block is-info is-large is-fullwidth">
+              <button
+                class="button is-block is-info is-large is-fullwidth"
+                @click.prevent="login"
+              >
                 Login
               </button>
             </form>
@@ -49,7 +54,21 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      form: {
+        email: null,
+        password: null
+      }
+    };
+  },
+  methods: {
+    login() {
+      this.$store.dispatch('auth/loginWithEmailAndPassword', this.form);
+    }
+  }
+};
 </script>
 
 <style scoped>
