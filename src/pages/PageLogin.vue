@@ -20,6 +20,14 @@
                     autocomplete="email"
                     v-model="form.email"
                   />
+                  <div v-if="$v.form.email.$error" class="form-error">
+                    <span v-if="!$v.form.email.required" class="help is-danger"
+                      >Email is required</span
+                    >
+                    <span v-if="!$v.form.email.email" class="help is-danger"
+                      >Email Adress is not valid</span
+                    >
+                  </div>
                 </div>
               </div>
               <div class="field">
@@ -31,6 +39,13 @@
                     autocomplete="current-password"
                     v-model="form.password"
                   />
+                  <div v-if="$v.form.password.$error" class="form-error">
+                    <span
+                      v-if="!$v.form.password.required"
+                      class="help is-danger"
+                      >Error Message</span
+                    >
+                  </div>
                 </div>
               </div>
               <button
@@ -54,6 +69,7 @@
 </template>
 
 <script>
+import { required, email } from 'vuelidate/lib/validators';
 export default {
   data() {
     return {
@@ -63,8 +79,22 @@ export default {
       }
     };
   },
+  validations: {
+    form: {
+      email: {
+        required,
+        email
+      },
+      password: {
+        required
+      }
+    }
+  },
   methods: {
     login() {
+      // validate the form
+      this.$v.form.$touch();
+
       this.$store.dispatch('auth/loginWithEmailAndPassword', this.form);
     }
   }
