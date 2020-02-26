@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default {
   namespaced: true,
   state: {},
@@ -7,7 +9,7 @@ export default {
       console.log(userData);
     },
     registerUser(context, userData) {
-      console.log(userData);
+      return axios.post('/api/v1/users/register', userData);
     }
   },
   mutations: {}
