@@ -19,13 +19,9 @@
 
     <div id="navbarBasicExample" class="navbar-menu">
       <div class="navbar-start">
-        <router-link :to="{ name: 'PageHome' }" class="navbar-item"
-          >Home</router-link
-        >
+        <router-link :to="{ name: 'PageHome' }" class="navbar-item">Home</router-link>
 
-        <router-link :to="{ name: 'PageMeetupFind' }" class="navbar-item"
-          >Find</router-link
-        >
+        <router-link :to="{ name: 'PageMeetupFind' }" class="navbar-item">Find</router-link>
 
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">More</a>
@@ -42,16 +38,22 @@
 
       <div class="navbar-end">
         <div class="navbar-item">
+          <div v-if="user">Welcome {{ user.name }}</div>
+        </div>
+        <div v-if="user" class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">Account</a>
+          <div class="navbar-dropdown">
+            <a href="#" class="navbar-item">Profile</a>
+            <hr class="navbar-divider" />
+            <a class="navbar-item">Logout</a>
+          </div>
+        </div>
+        <div v-else class="navbar-item has-dropdown">
           <div class="buttons">
-            <router-link
-              :to="{ name: 'PageRegister' }"
-              class="button is-primary"
-            >
+            <router-link :to="{name: 'PageRegister'}" class="button is-primary">
               <strong>Sign up</strong>
             </router-link>
-            <router-link :to="{ name: 'PageLogin' }" class="button is-light"
-              >Log in</router-link
-            >
+            <router-link :to="{name: 'PageLogin'}" class="button is-light">Log in</router-link>
           </div>
         </div>
       </div>
@@ -60,7 +62,14 @@
 </template>
 
 <script>
-export default {};
+import { mapGetters } from "vuex";
+export default {
+  computed: {
+    ...mapGetters({
+      user: "auth/authUser"
+    })
+  }
+};
 </script>
 
 <style scoped></style>
