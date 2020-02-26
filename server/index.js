@@ -22,6 +22,7 @@ require('./models/users');
 require('./models/threads');
 require('./models/posts');
 require('./models/categories');
+require('./services/passport');
 
 const meetupsRoutes = require('./routes/meetups'),
   usersRoutes = require('./routes/users'),
