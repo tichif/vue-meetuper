@@ -17,7 +17,14 @@
                     type="text"
                     placeholder="Username"
                     v-model="form.username"
+                    @blur="$v.form.username.$touch()"
                   />
+                  <div v-if="$v.form.username.$error" class="form-error">
+                    <span
+                      v-if="!$v.form.username.required"
+                      class="help is-danger"
+                    >Username is required</span>
+                  </div>
                 </div>
               </div>
               <div class="field">
@@ -27,7 +34,11 @@
                     type="text"
                     placeholder="Name"
                     v-model="form.name"
+                    @blur="$v.form.name.$touch()"
                   />
+                  <div v-if="$v.form.name.$error" class="form-error">
+                    <span v-if="!$v.form.name.required" class="help is-danger">Name is required</span>
+                  </div>
                 </div>
               </div>
               <div class="field">
@@ -37,7 +48,12 @@
                     type="email"
                     placeholder="Your Email"
                     v-model="form.email"
+                    @blur="$v.form.email.$touch()"
                   />
+                  <div v-if="$v.form.email.$error" class="form-error">
+                    <span v-if="!$v.form.email.required" class="help is-danger">Email is required</span>
+                    <span v-if="!$v.form.email.email" class="help is-danger">Email is invalid</span>
+                  </div>
                 </div>
               </div>
               <div class="field">
@@ -46,9 +62,13 @@
                     class="input is-large"
                     type="text"
                     placeholder="Avatar"
-                    autocomplete=""
+                    autocomplete
                     v-model="form.avatar"
+                    @blur="$v.form.avatar.$touch()"
                   />
+                  <div v-if="$v.form.avatar.$error" class="form-error">
+                    <span v-if="!$v.form.avatar.url" class="help is-danger">URL format is not valid</span>
+                  </div>
                 </div>
               </div>
               <div class="field">
@@ -59,7 +79,18 @@
                     placeholder="Your Password"
                     autocomplete="new-password"
                     v-model="form.password"
+                    @blur="$v.form.password.$touch()"
                   />
+                  <div v-if="$v.form.password.$error" class="form-error">
+                    <span
+                      v-if="!$v.form.password.required"
+                      class="help is-danger"
+                    >Password is required</span>
+                    <span
+                      v-if="!$v.form.password.minLength"
+                      class="help is-danger"
+                    >Password mut be at least 6 characters</span>
+                  </div>
                 </div>
               </div>
               <div class="field">
@@ -70,21 +101,31 @@
                     placeholder="Password Confirmation"
                     autocomplete="off"
                     v-model="form.passwordConfirmation"
+                    @blur="$v.form.passwordConfirmation.$touch()"
                   />
+                  <div v-if="$v.form.passwordConfirmation.$error" class="form-error">
+                    <span
+                      v-if="!$v.form.passwordConfirmation.required"
+                      class="help is-danger"
+                    >Password Confirmation is required</span>
+                    <span
+                      v-if="!$v.form.passwordConfirmation.sameAsPassword"
+                      class="help is-danger"
+                    >Password must be matched</span>
+                  </div>
                 </div>
               </div>
               <button
                 type="submit"
                 class="button is-block is-info is-large is-fullwidth"
                 @click.prevent="register"
-              >
-                Register
-              </button>
+                :disabled="isFormInvalid"
+              >Register</button>
             </form>
           </div>
           <p class="has-text-grey">
-            <router-link :to="{ name: 'PageLogin' }">Login</router-link>
-            &nbsp;·&nbsp; <a>Sign Up With Google</a> &nbsp;·&nbsp;
+            <router-link :to="{ name: 'PageLogin' }">Login</router-link>&nbsp;·&nbsp;
+            <a>Sign Up With Google</a> &nbsp;·&nbsp;
             <a href="../">Need Help?</a>
           </p>
         </div>
@@ -94,6 +135,13 @@
 </template>
 
 <script>
+import {
+  required,
+  email,
+  minLength,
+  sameAs,
+  url
+} from "vuelidate/lib/validators";
 export default {
   data() {
     return {
@@ -107,9 +155,42 @@ export default {
       }
     };
   },
+  validations: {
+    form: {
+      username: {
+        required
+      },
+      name: {
+        required
+      },
+      email: {
+        required,
+        email
+      },
+      avatar: {
+        url
+      },
+      password: {
+        required,
+        minLength: minLength(6)
+      },
+      passwordConfirmation: {
+        required,
+        sameAsPassword: sameAs("password")
+      }
+    }
+  },
   methods: {
     register() {
-      this.$store.dispatch('auth/registerUser', this.form);
+      // Validate the form
+      this.$v.form.$touch();
+
+      this.$store.dispatch("auth/registerUser", this.form);
+    }
+  },
+  computed: {
+    isFormInvalid() {
+      return this.$v.form.$invalid;
     }
   }
 };

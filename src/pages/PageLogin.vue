@@ -14,19 +14,19 @@
                 <div class="control">
                   <input
                     class="input is-large"
+                    @blur="$v.form.email.$touch()"
                     type="email"
                     placeholder="Your Email"
-                    autofocus=""
+                    autofocus
                     autocomplete="email"
                     v-model="form.email"
                   />
                   <div v-if="$v.form.email.$error" class="form-error">
-                    <span v-if="!$v.form.email.required" class="help is-danger"
-                      >Email is required</span
-                    >
-                    <span v-if="!$v.form.email.email" class="help is-danger"
-                      >Email Adress is not valid</span
-                    >
+                    <span v-if="!$v.form.email.required" class="help is-danger">Email is required</span>
+                    <span
+                      v-if="!$v.form.email.email"
+                      class="help is-danger"
+                    >Email Adress is not valid</span>
                   </div>
                 </div>
               </div>
@@ -34,6 +34,7 @@
                 <div class="control">
                   <input
                     class="input is-large"
+                    @blur="$v.form.password.$touch()"
                     type="password"
                     placeholder="Your Password"
                     autocomplete="current-password"
@@ -43,23 +44,20 @@
                     <span
                       v-if="!$v.form.password.required"
                       class="help is-danger"
-                      >Error Message</span
-                    >
+                    >Password is required</span>
                   </div>
                 </div>
               </div>
               <button
                 class="button is-block is-info is-large is-fullwidth"
                 @click.prevent="login"
-              >
-                Login
-              </button>
+                :disabled="isFormInvalid"
+              >Login</button>
             </form>
           </div>
           <p class="has-text-grey">
             <a>Sign In With Google</a> &nbsp;·&nbsp;
-            <router-link :to="{ name: 'PageRegister' }">Sign Up</router-link>
-            &nbsp;·&nbsp;
+            <router-link :to="{ name: 'PageRegister' }">Sign Up</router-link>&nbsp;·&nbsp;
             <a href="../">Need Help?</a>
           </p>
         </div>
@@ -69,7 +67,7 @@
 </template>
 
 <script>
-import { required, email } from 'vuelidate/lib/validators';
+import { required, email } from "vuelidate/lib/validators";
 export default {
   data() {
     return {
@@ -92,10 +90,15 @@ export default {
   },
   methods: {
     login() {
-      // validate the form
-      this.$v.form.$touch();
+      // Validate the from
+      this.$v.form.touch();
 
-      this.$store.dispatch('auth/loginWithEmailAndPassword', this.form);
+      this.$store.dispatch("auth/loginWithEmailAndPassword", this.form);
+    }
+  },
+  computed: {
+    isFormInvalid() {
+      return this.$v.form.$invalid;
     }
   }
 };
