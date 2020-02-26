@@ -51,7 +51,7 @@ exports.register = function(req, res) {
   });
 };
 
-exports.login = function(req, res) {
+exports.login = function(req, res, next) {
   const { email, password } = req.body;
 
   // check if exists email
@@ -72,5 +72,24 @@ exports.login = function(req, res) {
     });
   }
 
-  return passport.authenticate('local', (err, passportUser) => {});
+  return passport.authenticate('local', (err, passportUser) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (passportUser) {
+      req.login(passportUser, function(err) {
+        if (err) {
+          return next(err);
+        }
+        return res.json(passportUser);
+      });
+    } else {
+      return status(422).json({
+        errors: {
+          authentication: 'Ooops, something went wrong!!!'
+        }
+      });
+    }
+  })(req, res, next);
 };
