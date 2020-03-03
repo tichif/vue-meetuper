@@ -17,7 +17,7 @@
       </a>
     </div>
 
-    <div id="navbarBasicExample" class="navbar-menu">
+    <div id="navbarBasicExample" class="navbar-menu is-active">
       <div class="navbar-start">
         <router-link :to="{ name: 'PageHome' }" class="navbar-item">Home</router-link>
 
