@@ -11,6 +11,16 @@ exports.getUsers = function(req, res) {
   });
 };
 
+// exports.getCurrentUsers() = function(req, res, next) {
+//   const user = req.user;
+
+//   if (!user) {
+//     return res.sendStatus(422);
+//   }
+
+//   return res.json(user);
+// };
+
 exports.register = function(req, res) {
   const registerData = req.body;
 
@@ -85,9 +95,9 @@ exports.login = function(req, res, next) {
         return res.json(passportUser);
       });
     } else {
-      return status(422).json({
+      return res.status(422).send({
         errors: {
-          authentication: 'Ooops, something went wrong!!!'
+          authentication: 'Ooops, something went wrong!!!!'
         }
       });
     }
