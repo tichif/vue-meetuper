@@ -35,6 +35,17 @@ export default {
           commit('setAuthUser', null);
           return err;
         });
+    },
+    logout({ commit }) {
+      return axios
+        .post('/api/v1/users/logout')
+        .then(() => {
+          commit('setAuthUser', null);
+          return true;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   mutations: {
